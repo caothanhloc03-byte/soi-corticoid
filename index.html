@@ -82,6 +82,7 @@ details summary{cursor:pointer;font-weight:600;color:var(--tealt);min-height:40p
 .tabs button{border:0;background:transparent;color:var(--soft);font:600 12px Inter,Arial,sans-serif;display:flex;flex-direction:column;align-items:center;gap:3px;min-height:56px;border-radius:14px;cursor:pointer}
 .tabs svg{width:26px;height:26px}.tabs button.on{color:var(--tealt);background:var(--okbg)}
 .note{font-size:13px;color:var(--ort);margin:8px 0 0}
+.tg{cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:10px}.tg::after{content:'';width:10px;height:10px;border-right:2.5px solid var(--tealt);border-bottom:2.5px solid var(--tealt);transform:rotate(225deg);margin-top:6px;flex:none;transition:transform .2s}.shut .tg::after{transform:rotate(45deg);margin-top:-4px}.shut .bd{display:none}
 dialog{border:0;border-radius:22px;padding:20px;max-width:min(440px,92vw);background:var(--surf);color:var(--ink)}
 dialog::backdrop{background:rgba(5,20,24,.6)}
 dialog h2{font-size:21px;margin-bottom:6px}dialog ul{font-size:15px}
@@ -182,7 +183,8 @@ dialog h2{font-size:21px;margin-bottom:6px}dialog ul{font-size:15px}
 <!-- HƯỚNG DẪN -->
 <section class="scr" id="s-hd" hidden>
 <div class="card"><h2 style="font-size:20px">Hướng dẫn</h2>
-<div class="btns"><button class="btn" data-go="hdMau">Pha mẫu</button><button class="btn" data-go="hdDk">Điều kiện tốt</button><button class="btn" data-go="hdChuan">Đo chuẩn</button><button class="btn" data-go="hdChup">Chụp ảnh</button></div>
+<div class="btns"><button class="btn" data-go="hdMau">Pha mẫu</button><button class="btn" data-go="hdDk">Điều kiện tốt</button><button class="btn" data-go="hdChup">Chụp ảnh</button><button class="btn" data-go="hdChuan">Đo chuẩn</button></div>
+<p class="note" style="color:var(--soft)">Bấm một mục để mở, bấm lần nữa để thu gọn.</p>
 <p class="note">Các số liệu dưới đây là gợi ý ban đầu lấy từ tài liệu đã công bố. Quy trình chính thức là quy trình ghi trong đề cương sau khi đã tối ưu và thẩm định.</p></div>
 
 <div class="card" id="hdMau" style="scroll-margin-top:80px"><h2 style="font-size:20px">Cách pha mẫu</h2>
@@ -599,8 +601,12 @@ $('cpy').onclick=()=>copy($('code').value,$('calMsg'));
 $('ld').onclick=()=>{try{let c=JSON.parse(decodeURIComponent(escape(atob($('code').value.trim()))));if(!c.win&&c.rf>0)c={v:2,t:c.t||Date.now(),win:[{name:'Vết 1',rf:c.rf,sig:c.sig,h:c.h}]};if(!(Array.isArray(c.win)&&c.win.length&&c.win.every(w=>w.rf>0&&w.sig>0)))throw 0;cal=c;store(KC,cal);showCal();msg($('calMsg'),'Đã nạp mẫu chuẩn.');}catch(e){msg($('calMsg'),'Mã không hợp lệ.',true);}};
 $('clr').onclick=()=>{cal=null;try{localStorage.removeItem(KC);}catch(e){}showCal();$('calStage').hidden=true;$('calWarn').hidden=true;};
 
-document.querySelectorAll('[data-go]').forEach(b=>b.onclick=()=>$(b.dataset.go).scrollIntoView({block:'start'}));
-$('goHd').onclick=()=>{tab('hd');setTimeout(()=>$('hdChuan').scrollIntoView({block:'start'}),50);};
+const SECS=['hdMau','hdDk','hdChuan','hdChup'];
+function secSet(id,open,go){const c=$(id);c.classList.toggle('shut',!open);c.querySelector('h2').setAttribute('aria-expanded',open);document.querySelectorAll(`[data-go="${id}"]`).forEach(b=>{b.classList.toggle('fill',open);b.setAttribute('aria-expanded',open);});if(open&&go)c.scrollIntoView({block:'start'});}
+SECS.forEach(id=>{const c=$(id),h=c.querySelector('h2'),bd=document.createElement('div');bd.className='bd';while(h.nextSibling)bd.appendChild(h.nextSibling);c.appendChild(bd);
+  h.setAttribute('role','button');h.tabIndex=0;h.classList.add('tg');h.onclick=()=>secSet(id,c.classList.contains('shut'),false);h.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();h.onclick();}};secSet(id,false);});
+document.querySelectorAll('[data-go]').forEach(b=>b.onclick=()=>{const id=b.dataset.go;secSet(id,$(id).classList.contains('shut'),true);});
+$('goHd').onclick=()=>{tab('hd');setTimeout(()=>secSet('hdChuan',true,true),50);};
 /* ---------- lần đầu ---------- */
 const dlg=$('consent');$('okck').onchange=()=>$('okbtn').disabled=!$('okck').checked;$('okbtn').onclick=()=>{store(KOK,RULE);dlg.close();};
 dlg.addEventListener('cancel',e=>e.preventDefault());
