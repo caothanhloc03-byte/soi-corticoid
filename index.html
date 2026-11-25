@@ -139,7 +139,7 @@ dialog h2{font-size:21px;margin-bottom:6px}dialog ul{font-size:15px}
 <input type="text" id="levels" placeholder="Ví dụ: 0,5; 1; 2; 4" inputmode="decimal">
 <span class="lab">Mức cần phát hiện (cùng đơn vị)</span>
 <input type="text" id="thr" placeholder="Ví dụ: 1" inputmode="decimal">
-<p class="note" style="color:var(--soft)">Để trống nếu chỉ chụp một tấm chuẩn ở đúng mức cần phát hiện. Chuẩn hỗn hợp nhiều corticoid sẽ được lưu thành nhiều vết.</p>
+<p class="note" style="color:var(--soft)">Để trống nếu chỉ chụp một tấm chuẩn ở đúng mức cần phát hiện. Chuẩn hỗn hợp nhiều corticoid sẽ được lưu thành nhiều vết. <button class="btn" id="goHd" style="margin-top:8px;flex:none;width:100%">Xem cách đo chuẩn từng bước</button></p>
 </div>
 <label class="big"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg>Chụp tấm chuẩn<input id="fCal" type="file" accept="image/*" capture="environment" hidden></label>
 <div class="btns"><label class="btn">Chọn ảnh có sẵn<input id="fCal2" type="file" accept="image/*" hidden></label><button class="btn" id="dCal">Thử ảnh mô phỏng</button></div>
@@ -183,6 +183,25 @@ dialog h2{font-size:21px;margin-bottom:6px}dialog ul{font-size:15px}
 <section class="scr" id="s-hd" hidden>
 <div class="card"><h2 style="font-size:20px">Cách chụp để app đọc đúng</h2>
 <ol class="g"><li>Dùng hộp chụp kín sáng, đèn LED trắng, điện thoại đặt trên giá cố định, chụp thẳng từ trên xuống.</li><li>Đặt các tấm <b>nằm dọc, thành một hàng</b>, trên <b>nền tối</b>, cách nhau ít nhất nửa bề rộng tấm.</li><li>Tắt flash và HDR; chạm giữ màn hình để khóa lấy nét và độ sáng.</li><li>Kẻ vạch xuất phát bằng bút chì; app tự tìm vạch này và tuyến dung môi.</li><li>Chụp sau cùng một khoảng thời gian kể từ khi phun thuốc thử.</li></ol></div>
+<div class="card" id="hdChuan" style="scroll-margin-top:80px"><h2 style="font-size:20px">Cách đo chuẩn</h2>
+<p class="lead">Làm một lần mỗi ngày, và làm lại khi đổi lô thuốc thử, lô bản silica, điện thoại, đèn hoặc hộp chụp.</p>
+<h3 style="font-size:16px;margin-top:12px">1. Chuẩn bị tấm chuẩn</h3>
+<ol class="g"><li>Pha dung dịch chuẩn corticoid ở <b>đúng mức cần phát hiện</b> (ngưỡng của đề cương). Muốn soi nhiều corticoid cùng lúc thì pha <b>chuẩn hỗn hợp</b>; mỗi chất sẽ thành một vết riêng.</li>
+<li>Kẻ vạch xuất phát bằng <b>bút chì</b>, cách đáy khoảng 1 cm. Chấm chuẩn với cùng thể tích, cùng kích cỡ vết như khi chấm mẫu.</li>
+<li>Khai triển, sấy, phun thuốc thử <b>giống hệt quy trình của mẫu</b>. Đánh dấu tuyến dung môi bằng bút chì ngay khi lấy bản ra.</li></ol>
+<h3 style="font-size:16px;margin-top:12px">2. Chọn một trong hai cách</h3>
+<ul class="g"><li><b>Cách nhanh, một mức:</b> 1–3 tấm chuẩn cùng nồng độ. Để trống ô nồng độ; nhiều tấm sẽ được tính như lặp lại và app báo nếu chúng lệch nhau quá 20%.</li>
+<li><b>Cách đầy đủ, dãy nồng độ:</b> 4–5 tấm, ví dụ 0,25×, 0,5×, 1×, 2×, 4× mức cần phát hiện, xếp <b>từ trái sang phải</b>. Nhập các nồng độ theo đúng thứ tự (cách nhau bằng dấu chấm phẩy) và nhập mức cần phát hiện. App vẽ đường chuẩn, tính R² và báo mức bị bão hòa.</li></ul>
+<h3 style="font-size:16px;margin-top:12px">3. Chụp trong app</h3>
+<ol class="g"><li>Mở tab <b>Chuẩn</b>, nhập nồng độ (nếu theo cách đầy đủ), rồi bấm <b>Chụp tấm chuẩn</b>.</li>
+<li>Chụp sau cùng khoảng thời gian kể từ khi phun thuốc thử như sẽ chụp mẫu; cùng hộp chụp, cùng đèn, cùng khoảng cách, cùng điện thoại.</li></ol>
+<h3 style="font-size:16px;margin-top:12px">4. Kiểm tra trước khi dùng</h3>
+<ul class="g"><li>Ảnh kết quả: mỗi tấm có khung, hai vạch nét đứt xanh nằm đúng vạch xuất phát và tuyến dung môi, dải tím nhạt phủ đúng các vết chuẩn.</li>
+<li>Số vết và Rf khớp với các chất có trong chuẩn. Đặt tên cho từng vết (ví dụ “Dexamethason”) để đọc kết quả dễ hơn.</li>
+<li>Cách đầy đủ: R² nên từ 0,95 trở lên. Nếu có mức bị bão hòa, mẫu đậm hơn mức đó chỉ báo “có”, không suy ra hàm lượng.</li>
+<li>Có cảnh báo lóa sáng, nghiêng hoặc vết quá đậm: sửa cách chụp hoặc pha loãng chuẩn rồi đo lại.</li></ul>
+<h3 style="font-size:16px;margin-top:12px">5. Khi đo mẫu</h3>
+<p class="lead">Tốt nhất mỗi mẻ vẫn chạy kèm <b>một tấm chuẩn ở mức cần phát hiện</b> và chọn vai trò “Chuẩn” cho tấm đó. App sẽ lấy Rf và độ tím từ tấm này (khớp ánh sáng, dung môi, thuốc thử của chính mẻ đó); chuẩn đã lưu chỉ dùng để đặt tên vết và đối chiếu độ lệch. Muốn dùng cùng chuẩn trên máy khác: vào Thiết lập nâng cao, sao chép <b>Mã mẫu chuẩn</b> rồi nạp ở máy kia.</p></div>
 <div class="card"><h2 style="font-size:20px">Mỗi mẻ nên có</h2>
 <ul class="g"><li><b>Tấm chuẩn</b>: corticoid ở đúng mức cần phát hiện. App lấy Rf và độ tím từ tấm này, nên ánh sáng và thuốc thử luôn khớp với mẫu.</li><li><b>Mẫu trắng</b>: nền thuốc không có corticoid. Nếu lên tím, cả mẻ không hợp lệ.</li><li><b>Kiểm soát dương</b>: mẫu nền có thêm corticoid. Nếu không đạt, cả mẻ không hợp lệ.</li></ul>
 <p class="lead" style="margin-top:6px">Chọn vai trò ngay dưới từng tấm trong kết quả.</p></div>
@@ -531,6 +550,7 @@ $('cpy').onclick=()=>copy($('code').value,$('calMsg'));
 $('ld').onclick=()=>{try{let c=JSON.parse(decodeURIComponent(escape(atob($('code').value.trim()))));if(!c.win&&c.rf>0)c={v:2,t:c.t||Date.now(),win:[{name:'Vết 1',rf:c.rf,sig:c.sig,h:c.h}]};if(!(Array.isArray(c.win)&&c.win.length&&c.win.every(w=>w.rf>0&&w.sig>0)))throw 0;cal=c;store(KC,cal);showCal();msg($('calMsg'),'Đã nạp mẫu chuẩn.');}catch(e){msg($('calMsg'),'Mã không hợp lệ.',true);}};
 $('clr').onclick=()=>{cal=null;try{localStorage.removeItem(KC);}catch(e){}showCal();$('calStage').hidden=true;$('calWarn').hidden=true;};
 
+$('goHd').onclick=()=>{tab('hd');setTimeout(()=>$('hdChuan').scrollIntoView({block:'start'}),50);};
 /* ---------- lần đầu ---------- */
 const dlg=$('consent');$('okck').onchange=()=>$('okbtn').disabled=!$('okck').checked;$('okbtn').onclick=()=>{store(KOK,RULE);dlg.close();};
 dlg.addEventListener('cancel',e=>e.preventDefault());
